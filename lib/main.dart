@@ -6,13 +6,15 @@ import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {
   //simulate delay to test CircularProgressIndicator
-  await Future.delayed(const Duration(milliseconds: 1500));
+  //await Future.delayed(const Duration(milliseconds: 1500));
   final response =
       await http.get('https://jsonplaceholder.typicode.com/albums/1');
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
+    //Map<String, dynamic> jsonMap = jsonDecode(response.body);
+
     return Album.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
@@ -72,9 +74,26 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 print('data recieved');
-                return Text(snapshot.data.title);
+                return Text(
+                  snapshot.data.title,
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.indigo,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
               } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                return Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "${snapshot.error}",
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
               }
               print('data not recieved yet');
               // By default, show a loading spinner.
